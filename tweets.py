@@ -4,11 +4,11 @@ from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 
-#Keys generating after registering the app on twitter
-consumer_key = 'k6gI0TbRp7NKHQGOlArOeWCGe'
-consumer_secret = 'xy5yB5nHx8lBrl56j7ZnoNmwW5mpQB3dl8pBFEffkCkpl9byBq'
-access_token = '3267228391-Xyuj9YQxRlChW27FPqSBt4pCnuPxkJ89GqPNP3Z'
-access_secret = 'tEmifh21feNNtwtN5Kh63DNa4GofJryAUeTDlgjncO4j1'
+#Keys generated after registering the app on twitter
+consumer_key = '*******'
+consumer_secret = '********'
+access_token = '*******'
+access_secret = '*********'
 
 #Creating OAuthHandler object to set access, secret and token and
 #twitter API object to fetch tweets
