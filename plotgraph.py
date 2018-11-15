@@ -20,10 +20,11 @@ def get_count(tweets_labelled):
 
 #Clean tweets using Regular Expression
 def clean_tweet(tweet):
-    return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t]) | (\w +:\ / \ / \S +)", " ", tweet).split())
+    return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t]) | \
+    (\w +:\ / \ / \S +)", " ", tweet).split())
 
 
-#Sense Polarity
+#Sense the Polarity
 def get_sentiment(tweet):
     analysis = TextBlob(clean_tweet(tweet))
     if analysis.sentiment.polarity > 0:
@@ -39,16 +40,17 @@ def calculate_polarity_count_of_tweets():
     positive_count = []
     negative_count = []
     neutral_count = []
+    tweets_labelled = []
+    tweet_labels = []
     try:
         cwd = os.path.join(os.getcwd(), 'tweets')
         movies = os.listdir(cwd)
-        for fname in os.listdir(cwd):
-            with open(os.path.join(cwd, fname), 'r') as f:
-                tweets_labelled = []
-                tweet_labels = []
+        for movie_name in movies:
+            with open(os.path.join(cwd, movie_name), 'rb') as f:
                 tweets = f.readlines()
                 tweets = tweets[:len(tweets):2]
                 for tweet in tweets:
+                    tweet = tweet.decode(errors = 'replace')
                     label = get_sentiment(tweet)
                     tweets_labelled.append({'text': tweet, 'sentiment': label})
                     tweet_labels.append(label)
@@ -56,14 +58,12 @@ def calculate_polarity_count_of_tweets():
                 positive_count.append(pos)
                 negative_count.append(neg)
                 neutral_count.append(neut)
-
         return movies, positive_count, negative_count, neutral_count
-
     except BaseException  as e:
         print e
 
 
-#Drawing the polarity graph
+#Drawing the polarity graph of all movies
 def draw_polarity_count_graph(movies,positive_count, negative_count, neutral_count):
     fig, ax = plot.subplots()
     index = np.arange(movies.__len__())
@@ -84,18 +84,17 @@ def draw_polarity_count_graph(movies,positive_count, negative_count, neutral_cou
                      alpha=opacity,
                      color='b',
                      label='Neutral')
-
     b = plot.figure(1)
     plot.xlabel('Movies')
     plot.ylabel('Count')
     plot.title('Polarity Count of Movies')
-    plot.xticks(index + 1.5*bar_width, movies ,rotation=90)
+    plot.xticks(index + 1.5 * bar_width, movies ,rotation = 90)
     plot.legend()
     plot.tight_layout()
     l = plot.figure(2)
-    plot.plot(range(8),negative_count,color='r',label='Negative')
-    plot.plot(range(8),positive_count,color='g', label='Positive')
-    plot.plot(range(8), neutral_count, color='b', label='Neutral')
+    plot.plot(range(4),negative_count,color='r',label='Negative')
+    plot.plot(range(4),positive_count,color='g', label='Positive')
+    plot.plot(range(4), neutral_count, color='b', label='Neutral')
     plot.xlabel('Movies')
     plot.ylabel('Count')
     plot.title('Polarity Count of Movies')
